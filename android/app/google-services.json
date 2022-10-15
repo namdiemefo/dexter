@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "549876080467",
+    "project_id": "dexter-552a9",
+    "storage_bucket": "dexter-552a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549876080467:android:b95ae4ef12162e1772cba6",
+        "android_client_info": {
+          "package_name": "com.example.dexter_todo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "549876080467-n91acv4dau26bu8l1khvhiuko77gdulu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAqq0FeZWIbYxRXLp-GKX8cGf9DIOAB58"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549876080467-n91acv4dau26bu8l1khvhiuko77gdulu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "549876080467-ghb02a4hlvh8bntch8maosht08iasj6h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.dexterTodo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
