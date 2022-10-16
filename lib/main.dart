@@ -5,10 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'helpers/assets/colors.dart';
+import 'helpers/di/dependency.dart';
 import 'main_bloc_observer.dart';
 import 'ui/app/app_page.dart';
 
 void main() async {
+  setUpLocator();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   Bloc.observer = MainBlocObserver();

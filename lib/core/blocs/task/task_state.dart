@@ -14,6 +14,18 @@ class TaskLoading extends TaskState {
   List<Object> get props => [];
 }
 
+class GetList extends TaskState {
+
+  final List<Nurse> nurses;
+  final List<Shift> shifts;
+  final List<Resident> residents;
+
+  GetList(this.nurses, this.shifts, this.residents);
+
+  @override
+  List<Object> get props => [nurses, shifts, residents];
+}
+
 class CreateTaskSuccess extends TaskState {
   @override
   List<Object> get props => [];

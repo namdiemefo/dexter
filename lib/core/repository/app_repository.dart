@@ -19,7 +19,11 @@ class AppRepository extends AppRepositoryInterface {
 
   @override
   markTask(bool value, String id) async {
-    await db.collection("tasks").doc(id).update({"status": value});
+    print(id);
+    QuerySnapshot tasks = await db.collection("tasks").where("id", isEqualTo: id).get();
+    print(tasks.docs[0].id);
+    String docId = tasks.docs[0].id;
+    await db.collection("tasks").doc(docId).update({"status": value});
   }
 
   @override
@@ -28,7 +32,7 @@ class AppRepository extends AppRepositoryInterface {
     QuerySnapshot nurses = await db.collection("users").get();
     List<Nurse> listOfNurses = nurses.docs.map((e) => Nurse(
       name: e["name"],
-      id: e["id"]
+      id: e["id"],
     )).toList();
     return listOfNurses;
 
@@ -61,9 +65,10 @@ class AppRepository extends AppRepositoryInterface {
   @override
   Future<List<Task>> getTasks() async {
     QuerySnapshot tasks = await db.collection("tasks").get();
-    List<Task> listOfTasks= tasks.docs.map((e) => Task(
+    List<Task> listOfTasks = tasks.docs.map((e) => Task(
         note: e["note"],
         user: e["user"],
+        resident: e["resident"],
         id: e["id"],
         shiftStartTime: e["shiftStartTime"],
         shiftStopTime: e["shiftStopTime"],

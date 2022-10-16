@@ -64,14 +64,14 @@ class __TodoPageState extends State<_TodoPage> {
           return Scaffold(
             appBar: AppBar(
               actions: [
-                PopupMenuButton(
-                    itemBuilder: (_) => shiftFilters(_shifts),
-                    onSelected: (e) {
-                      if (e is Shift) {
-                        context.bloc<TodoCubit>().filterTasks(e.startTime, e.stopTime);
-                      }
-                    },
-                )
+                // PopupMenuButton(
+                //     itemBuilder: (_) => shiftFilters(_shifts),
+                //     onSelected: (e) {
+                //       if (e is Shift) {
+                //         context.bloc<TodoCubit>().filterTasks(e.startTime, e.stopTime);
+                //       }
+                //     },
+                // )
               ],
             ),
             body: SafeArea(
@@ -85,22 +85,33 @@ class __TodoPageState extends State<_TodoPage> {
                       enablePullUp: false,
                       header: ClassicHeader(),
                       onRefresh: () {
-                        context.bloc<TodoCubit>().getTasks();
+                        // context.bloc<TodoCubit>().getTasks();
                       },
                       child: ListView.builder(
                           itemCount: _tasks.length,
                           itemBuilder: (BuildContext itemContext, int index) {
                             return Container(
                               padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+                              margin: EdgeInsets.symmetric(vertical: 20.0),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.all(
                                     Radius.circular(10.0)),
                               ),
-                              height: 75,
+                              height: 100,
                               child: CheckboxListTile(
-                                title: Text("${_tasks[index].note}"),
-                                subtitle: Text(
-                                    "Nurse: ${_tasks[index].user} Shift: ${_tasks[index].shiftStartTime}:00 - ${_tasks[index].shiftStopTime}:00 Resident: ${_tasks[index].resident}"),
+                                title: Row(
+                                  children: [
+                                    Expanded(child: Text("${_tasks[index].note}")),
+                                  ],
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Nurse: ${_tasks[index].user}"),
+                                    Text("Shift: ${_tasks[index].shiftStartTime}:00 - ${_tasks[index].shiftStopTime}:00"),
+                                    Text("Resident: ${_tasks[index].resident}")
+                                  ],
+                                ),
                                 value: _tasks[index].status,
                                 activeColor: Colors.green,
                                 checkColor: Colors.white,

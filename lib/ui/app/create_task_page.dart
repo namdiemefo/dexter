@@ -7,12 +7,13 @@ import 'package:dexter_todo/helpers/assets/colors.dart';
 import 'package:dexter_todo/helpers/utils/funcs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 class CreateTaskPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TaskCubit(),
+      create: (context) => TaskCubit()..getLists(),
       child: _CreateTaskPage(),
     );
   }
@@ -27,7 +28,7 @@ class _CreateTaskPage extends StatefulWidget {
 class __CreateTaskPageState extends State<_CreateTaskPage> {
 
   final _formKey = GlobalKey<FormState>();
-  String _note;
+  String _note, nurse;
   Nurse _nurse;
   Shift _shift;
   Resident _resident;
@@ -42,6 +43,13 @@ class __CreateTaskPageState extends State<_CreateTaskPage> {
           // TODO: implement listener
         },
         builder: (context, state) {
+
+          if (state is GetList) {
+            nurses = state.nurses;
+            residents = state.residents;
+            shifts = state.shifts;
+          }
+
           return Scaffold(
             appBar: AppBar(
               title: Text('Create Task'),
@@ -102,7 +110,7 @@ class __CreateTaskPageState extends State<_CreateTaskPage> {
                                       return null;
                                     },
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: Colors.black,
                                       fontSize: 12.0,
                                     ),
                                     onSaved: (value) {
@@ -119,22 +127,15 @@ class __CreateTaskPageState extends State<_CreateTaskPage> {
                           ),
 
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text("Enter Nurse"),
-                            ],
-                          ),
-
-                          SizedBox(
-                            height: 10,
-                          ),
-
-                          Row(
                             children: [
                               Expanded(
                                 child: DropdownButton<Nurse>(
                                   // icon: const Icon(Icons.keyboard_arrow_down),
-                                  items: nurses.map((e) => DropdownMenuItem<Nurse>(child: Text(e.name))).toList(),
+                                  hint: Text("Select Nurse"),
+                                  items: nurses.map((e) => DropdownMenuItem<Nurse>(
+                                      child: Text(e.name),
+                                      value: e,
+                                  )).toList(),
                                     value: _nurse,
                                     onChanged: (Nurse value) {
                                       setState(() {
@@ -150,22 +151,13 @@ class __CreateTaskPageState extends State<_CreateTaskPage> {
                             height: 25,
                           ),
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text("Enter Resident"),
-                            ],
-                          ),
-
-                          SizedBox(
-                            height: 10,
-                          ),
 
                           Row(
                             children: [
                               Expanded(
                                   child: DropdownButton<Resident>(
-                                    items: residents.map((e) => DropdownMenuItem<Resident>(child: Text(e.name))).toList(),
+                                    hint: Text("Select Resident"),
+                                    items: residents.map((e) => DropdownMenuItem<Resident>(child: Text(e.name), value: e)).toList(),
                                     value: _resident,
                                     onChanged: (Resident value) {
                                       setState(() {
@@ -181,22 +173,14 @@ class __CreateTaskPageState extends State<_CreateTaskPage> {
                             height: 25,
                           ),
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text("Enter Shift"),
-                            ],
-                          ),
 
-                          SizedBox(
-                            height: 10,
-                          ),
 
                           Row(
                             children: [
                               Expanded(
                                   child: DropdownButton<Shift>(
-                                    items: shifts.map((e) => DropdownMenuItem<Shift>(child: Text(e.name))).toList(),
+                                    hint: Text("Select Shift"),
+                                    items: shifts.map((e) => DropdownMenuItem<Shift>(child: Text(e.name), value: e)).toList(),
                                     value: _shift,
                                     onChanged: (Shift value) {
                                       setState(() {
@@ -224,11 +208,18 @@ class __CreateTaskPageState extends State<_CreateTaskPage> {
                                       ),
                                     ),
                                     onPressed: () {
+                                      _formKey.currentState.save();
                                       if (_note == null || _nurse == null || _resident == null || _shift == null) {
+                                        print(_shift);
+                                        print(_note);
+                                        print(_resident);
+                                        print(_nurse);
                                         final scaffold = ScaffoldMessenger.of(context);
                                         scaffold.showSnackBar(SnackBar(content: Text("All fields must be entered")));
                                       } else {
-                                        Task _task = Task(note: _note, user: _nurse.name, resident: _resident.name, shiftStartTime: _shift.startTime, shiftStopTime: _shift.stopTime);
+                                        print("here");
+                                        var uuid = Uuid();
+                                        Task _task = Task(note: _note, id: uuid.v4(), user: _nurse.name, resident: _resident.name, shiftStartTime: _shift.startTime, shiftStopTime: _shift.stopTime, status: false);
                                         context.bloc<TaskCubit>().createTask(_task);
                                       }
 
