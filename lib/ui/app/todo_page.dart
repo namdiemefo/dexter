@@ -31,12 +31,10 @@ class __TodoPageState extends State<_TodoPage> {
   Shift _shift;
   var _refreshController = RefreshController(initialRefresh: false);
 
-  List<PopupMenuItem> shiftFilters(List<Shift> shifts) {
-    List<PopupMenuItem> filters = shifts.map((e) => PopupMenuItem(
-        value: _shift,
-        child: Text(e.name)
-    )).toList();
-    return filters;
+  @override
+  void initState() {
+    context.bloc<TodoCubit>().getShifts();
+    super.initState();
   }
 
   @override
@@ -58,28 +56,28 @@ class __TodoPageState extends State<_TodoPage> {
             _tasks = state.tasks;
           }
 
-          if (state is ShiftList) {
-            _shifts = state.shifts;
-          }
+          // if (state is ShiftList) {
+          //   _shifts = state.shifts;
+          // }
 
           return Scaffold(
             appBar: AppBar(
               actions: [
-                PopupMenuButton(
-                    itemBuilder: (_) => _shifts.map((e) => PopupMenuItem<Shift>(
-                        value: _shift,
-                        child: Text(e.name)
-                    )).toList(),
-                  // itemBuilder: (_) => [PopupMenuItem(child: Text(_shifts[0].name))],
-                    onSelected: (e) {
-                      if (e is Shift) {
-                        setState(() {
-                          _shift = e;
-                        });
-                        context.bloc<TodoCubit>().filterTasks(e.startTime, e.stopTime);
-                      }
-                    },
-                )
+                // PopupMenuButton(
+                //     itemBuilder: (_) => _shifts.map((e) => PopupMenuItem<Shift>(
+                //         value: _shift,
+                //         child: Text(e.name)
+                //     )).toList(),
+                //   // itemBuilder: (_) => [PopupMenuItem(child: Text(_shifts[0].name))],
+                //     onSelected: (e) {
+                //       if (e is Shift) {
+                //         setState(() {
+                //           _shift = e;
+                //         });
+                //         context.bloc<TodoCubit>().filterTasks(e.startTime, e.stopTime);
+                //       }
+                //     },
+                // )
               ],
             ),
             body: SafeArea(
