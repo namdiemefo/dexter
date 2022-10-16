@@ -12,9 +12,7 @@ class AppRepository extends AppRepositoryInterface {
 
   @override
   createTask(Task task) async {
-
-    DocumentReference doc = await db.collection("tasks").add(task.toJson());
-    
+    await db.collection("tasks").add(task.toJson());
   }
 
   @override

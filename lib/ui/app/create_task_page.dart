@@ -210,14 +210,9 @@ class __CreateTaskPageState extends State<_CreateTaskPage> {
                                     onPressed: () {
                                       _formKey.currentState.save();
                                       if (_note == null || _nurse == null || _resident == null || _shift == null) {
-                                        print(_shift);
-                                        print(_note);
-                                        print(_resident);
-                                        print(_nurse);
                                         final scaffold = ScaffoldMessenger.of(context);
                                         scaffold.showSnackBar(SnackBar(content: Text("All fields must be entered")));
                                       } else {
-                                        print("here");
                                         var uuid = Uuid();
                                         Task _task = Task(note: _note, id: uuid.v4(), user: _nurse.name, resident: _resident.name, shiftStartTime: _shift.startTime, shiftStopTime: _shift.stopTime, status: false);
                                         context.bloc<TaskCubit>().createTask(_task);
