@@ -12,7 +12,7 @@ class TodoPage extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
       TodoCubit()
-        ..getTasks()..getShifts(),
+        ..getTasks(),
       child: _TodoPage(),
     );
   }
@@ -33,7 +33,7 @@ class __TodoPageState extends State<_TodoPage> {
 
   @override
   void initState() {
-    context.bloc<TodoCubit>().getShifts();
+    // context.bloc<TodoCubit>().getShifts();
     super.initState();
   }
 
